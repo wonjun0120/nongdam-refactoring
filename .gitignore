@@ -9,6 +9,7 @@ build/
 .env
 .env.prod
 .env.dev
+.env.local
 
 ### STS ###
 .apt_generated

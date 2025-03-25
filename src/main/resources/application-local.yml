@@ -1,0 +1,64 @@
+spring:
+  datasource:
+    url: ${SPRING_DATASOURCE_URL}
+    username: ${SPRING_DATASOURCE_USERNAME}
+    password: ${SPRING_DATASOURCE_PASSWORD}
+    driver-class-name: com.mysql.cj.jdbc.Driver
+
+  jpa:
+    hibernate:
+      ddl-auto: update
+    properties:
+      hibernate:
+        show_sql: true
+        format_sql: true
+    open-in-view: false
+    defer-datasource-initialization: true
+
+  sql:
+    init:
+      mode: always
+
+  servlet:
+    multipart:
+      enabled: true
+      file-size-threshold: 0B
+      location: ${UPLOAD_PATH}
+      max-file-size: 100MB
+      max-request-size: 100MB
+
+  openai:
+    model: ${OPENAI_MODEL}
+    api-url: ${OPENAI_MODEL_API_URL}
+    secret: ${OPENAI_SECRET}
+
+jwt:
+  secret: ${JWT_SECRET}
+
+token:
+  expire:
+    time:
+      access: ${TOKEN_EXPIRE_TIME_ACCESS}
+      refresh: ${TOKEN_EXPIRE_TIME_REFRESH}
+
+oauth:
+  kakao:
+    rest-api-key: ${OAUTH_KAKAO_REST_API_KEY}
+    redirect-url: ${OAUTH_KAKAO_REDIRECT_URL}
+
+aws:
+  s3:
+    accessKey: ${S3_ACCESS_KEY}
+    secretKey: ${S3_SECRET_KEY}
+    bucket-name: ${S3_BUCKET_NAME}
+    image-path: ${S3_IMAGE_PATH}
+    url-format: ${S3_URL_FORMAT}
+    endpoint: ${S3_ENDPOINT}
+    region: ${S3_REGION}
+
+logging:
+  level:
+    root: info
+
+server:
+  url: ${PROD_URL}
