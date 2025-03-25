@@ -1,6 +1,13 @@
-# 환경변수 자동 로딩
+# 기본 환경 파일 로드
 include .env.local
 export
+
+# 테스트용 환경 변수도 export 하도록 설정
+ENV_TEST_FILE := .env.test
+ifeq (test,$(MAKECMDGOALS))
+	include $(ENV_TEST_FILE)
+	export
+endif
 
 # Docker Compose 명령어들
 up:
@@ -31,7 +38,7 @@ build:
 	./gradlew clean build
 
 test:
-	./gradlew test
+	set -a && source .env.test && set +a && ./gradlew test
 
 querydsl:
 	./gradlew clean build -x test
@@ -55,7 +62,7 @@ help:
 	@echo "  make mysql      - MySQL 접속"
 	@echo "  make minio      - MinIO 접속"
 	@echo "  make build      - 프로젝트 빌드"
-	@echo "  make test       - 테스트 실행"
+	@echo "  make test       - 테스트 실행 (SPRING_PROFILES_ACTIVE=test 자동 설정)"
 	@echo "  make querydsl   - Q 클래스 생성"
 	@echo "  make prod       - 운영 배포 실행"
 	@echo "  make prune      - 도커 정리"
