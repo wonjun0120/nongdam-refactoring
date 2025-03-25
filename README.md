@@ -26,14 +26,12 @@
 <table>
 <thead>
   <tr>
-    <th>Frontend</th>
     <th>Backend</th>
   </tr>
 </thead>
 <tbody>
   <tr>
     <td align="center">최원준</td>
-    <td align="center">김동균</td>
   </tr>
   <tr>
     <td>
@@ -41,15 +39,15 @@
         <img src="https://github.com/wonjun0120.png" style="width:230px"/>
       </a>
     </td>
-    <td>
-      <a href="https://github.com/dongkyun0713">
-        <img src="https://github.com/dongkyun0713.png" style="width:230px"/>
-      </a>
-    </td>
   </tr>
   <tr>
     <td align="center"><a href="https://github.com/wonjun0120">@wonjun0120</a></td>
-    <td align="center"><a href="https://github.com/dongkyun0713">@dongkyun0713</a></td>
   </tr>
 </tbody>
 </table>
+※ 과거에는 2인 프로젝트였으며, 현재는 단독으로 유지보수 및 리팩토링 진행 중입니다.
+
+## 📌 기타
+현재 리팩토링 단계에 있으며, 구조 개선 및 문서화 작업을 병행하고 있습니다.
+
+향후에는 API 명세, 테스트 커버리지, 배포 자동화 문서도 추가될 예정입니다.
