@@ -2,13 +2,6 @@
 include .env.local
 export
 
-# 테스트용 환경 변수도 export 하도록 설정
-ENV_TEST_FILE := .env.test
-ifeq (test,$(MAKECMDGOALS))
-	include $(ENV_TEST_FILE)
-	export
-endif
-
 # Docker Compose 명령어들
 up:
 	docker-compose up --build -d
@@ -38,7 +31,7 @@ build:
 	./gradlew clean build
 
 test:
-	set -a && source .env.test && set +a && ./gradlew test
+	SPRING_PROFILES_ACTIVE=test ./gradlew test
 
 querydsl:
 	./gradlew clean build -x test
