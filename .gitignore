@@ -9,6 +9,8 @@ build/
 .env
 .env.prod
 .env.dev
+.env.local
+.env.test
 
 ### STS ###
 .apt_generated
@@ -32,6 +34,7 @@ out/
 !**/src/test/**/out/
 
 src/**/application-prod.yml
+src/**/application-test.yml
 
 ### NetBeans ###
 /nbproject/private/
