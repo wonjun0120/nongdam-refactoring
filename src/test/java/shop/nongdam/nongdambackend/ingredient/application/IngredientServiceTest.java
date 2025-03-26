@@ -33,6 +33,7 @@ import shop.nongdam.nongdambackend.member.domain.Role;
 import shop.nongdam.nongdambackend.member.domain.SocialType;
 import shop.nongdam.nongdambackend.member.domain.repository.MemberRepository;
 import shop.nongdam.nongdambackend.region.domain.Region;
+import shop.nongdam.nongdambackend.region.domain.repository.RegionRepository;
 
 import java.lang.reflect.Constructor;
 import java.util.List;
@@ -61,6 +62,7 @@ class IngredientServiceTest {
     @Mock private FarmRepository farmRepository;
     @Mock private IngredientUglyReasonRepository ingredientUglyReasonRepository;
     @Mock private IngredientCategoryRepository ingredientCategoryRepository;
+    @Mock private RegionRepository regionRepository;
 
     private Member testMember;
     private Farm testFarm;
@@ -237,6 +239,45 @@ class IngredientServiceTest {
         // then
         assertThat(result.ingredientInfoResponseDTOs()).hasSize(1);
         verify(ingredientRepository).findAllIngredients(pageable);
+    }
+
+    @Test
+    @DisplayName("findAll: category=전체, region=서울 → region 필터링 적용")
+    void findAll_withRegionOnly_shouldFilterByRegion() {
+        // given
+        Pageable pageable = PageRequest.of(0, 10);
+
+        Region matchedRegion = mock(Region.class);
+        when(matchedRegion.getName()).thenReturn("서울");
+
+        Region otherRegion = mock(Region.class);
+
+        Farm farm1 = mock(Farm.class);
+        when(farm1.getRegion()).thenReturn(matchedRegion);
+        when(farm1.getId()).thenReturn(1L);
+
+        Farm farm2 = mock(Farm.class);
+        when(farm2.getRegion()).thenReturn(otherRegion);
+
+        Ingredient ingredient1 = mock(Ingredient.class);
+        when(ingredient1.getFarm()).thenReturn(farm1);
+        when(ingredient1.getIngredientCategory()).thenReturn(testCategory);
+        when(ingredient1.getIngredientUglyReason()).thenReturn(testUglyReason);
+
+        Ingredient ingredient2 = mock(Ingredient.class);
+        when(ingredient2.getFarm()).thenReturn(farm2);
+
+        Page<Ingredient> page = new PageImpl<>(List.of(ingredient1, ingredient2));
+
+        when(ingredientRepository.findAllIngredients(pageable)).thenReturn(page);
+        when(regionRepository.findByName("서울")).thenReturn(Optional.of(matchedRegion));
+
+        // when
+        var result = ingredientService.findAll("전체", "서울", pageable);
+
+        // then
+        assertThat(result.ingredientInfoResponseDTOs()).hasSize(1); // only ingredient1
+        verify(regionRepository).findByName("서울");
     }
 
 
