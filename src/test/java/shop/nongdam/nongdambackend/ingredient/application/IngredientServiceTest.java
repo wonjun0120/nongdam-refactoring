@@ -32,6 +32,7 @@ import shop.nongdam.nongdambackend.member.domain.Member;
 import shop.nongdam.nongdambackend.member.domain.Role;
 import shop.nongdam.nongdambackend.member.domain.SocialType;
 import shop.nongdam.nongdambackend.member.domain.repository.MemberRepository;
+import shop.nongdam.nongdambackend.openai.application.OpenAiService;
 import shop.nongdam.nongdambackend.region.domain.Region;
 import shop.nongdam.nongdambackend.region.domain.repository.RegionRepository;
 
@@ -57,6 +58,7 @@ class IngredientServiceTest {
     @InjectMocks private IngredientService ingredientService;
 
     @Mock private ImageService imageService;
+    @Mock private OpenAiService openAiService;
     @Mock private IngredientRepository ingredientRepository;
     @Mock private MemberRepository memberRepository;
     @Mock private FarmRepository farmRepository;
@@ -278,6 +280,81 @@ class IngredientServiceTest {
         // then
         assertThat(result.ingredientInfoResponseDTOs()).hasSize(1); // only ingredient1
         verify(regionRepository).findByName("서울");
+    }
+
+    @Test
+    @DisplayName("findById: 존재하는 재료 ID 조회 시 응답 DTO 반환")
+    void findById_withValidId_shouldReturnIngredientInfoResponseDTO() {
+        // given
+        Long ingredientId = 1L;
+
+        Ingredient mockIngredient = mock(Ingredient.class);
+        when(ingredientRepository.findById(ingredientId)).thenReturn(Optional.of(mockIngredient));
+        when(mockIngredient.getIngredientCategory()).thenReturn(testCategory);
+        when(mockIngredient.getIngredientUglyReason()).thenReturn(testUglyReason);
+        when(mockIngredient.getFarm()).thenReturn(testFarm);
+
+        // when
+        var result = ingredientService.findById(ingredientId);
+
+        // then
+        assertThat(result).isNotNull();
+        verify(ingredientRepository).findById(ingredientId);
+    }
+
+    @Test
+    @DisplayName("chatGpt: 이미 gptComment가 존재하는 경우 기존 값 반환")
+    void chatGpt_whenGptCommentExists_shouldReturnExistingComment() {
+        // given
+        Long ingredientId = 1L;
+        String existingComment = "기존 GPT 코멘트입니다.";
+
+        Ingredient ingredient = mock(Ingredient.class);
+        when(ingredientRepository.findById(ingredientId)).thenReturn(Optional.of(ingredient));
+        when(ingredient.getGptComment()).thenReturn(existingComment);
+
+        // when
+        var result = ingredientService.chatGpt(ingredientId);
+
+        // then
+        assertThat(result).isNotNull();
+        assertThat(result.content()).isEqualTo(existingComment);
+
+        verify(ingredientRepository).findById(ingredientId);
+        verifyNoInteractions(openAiService);
+    }
+
+    @Test
+    @DisplayName("chatGpt: gptComment가 없으면 GPT 호출 후 저장")
+    void chatGpt_whenGptCommentIsBlank_shouldCallOpenAiAndSave() {
+        // given
+        Long ingredientId = 1L;
+        String generatedComment = "GPT가 생성한 코멘트입니다.";
+
+        Region region = mock(Region.class);
+        when(region.getName()).thenReturn("서울");
+
+        Farm farm = mock(Farm.class);
+        when(farm.getRegion()).thenReturn(region);
+
+        Ingredient ingredient = mock(Ingredient.class);
+        when(ingredient.getGptComment()).thenReturn(""); // 빈 문자열
+        when(ingredient.getFarm()).thenReturn(farm);
+        when(ingredient.getIngredientName()).thenReturn("양파");
+
+        when(ingredientRepository.findById(ingredientId)).thenReturn(Optional.of(ingredient));
+        when(openAiService.chat(anyString())).thenReturn(generatedComment);
+
+        // when
+        var result = ingredientService.chatGpt(ingredientId);
+
+        // then
+        assertThat(result).isNotNull();
+        assertThat(result.content()).isEqualTo(generatedComment);
+
+        verify(openAiService).chat(anyString());
+        verify(ingredient).setGptComment(generatedComment);
+        verify(ingredientRepository).save(ingredient);
     }
 
 
