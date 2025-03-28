@@ -1,4 +1,4 @@
-package shop.nongdam.nongdambackend.Farm.application;
+package shop.nongdam.nongdambackend.farm.application;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -13,7 +13,6 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.test.util.ReflectionTestUtils;
 import shop.nongdam.nongdambackend.farm.api.dto.request.FarmSaveRequestDTO;
-import shop.nongdam.nongdambackend.farm.application.FarmService;
 import shop.nongdam.nongdambackend.farm.domain.Farm;
 import shop.nongdam.nongdambackend.farm.domain.FarmBadge;
 import shop.nongdam.nongdambackend.farm.domain.repository.FarmBadgeRepository;
