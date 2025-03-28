@@ -1,6 +1,5 @@
 package shop.nongdam.nongdambackend.Farm.application;
 
-import org.apache.tomcat.util.bcel.Const;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -24,7 +23,6 @@ import shop.nongdam.nongdambackend.farm.exception.FarmBadgeNotFoundException;
 import shop.nongdam.nongdambackend.farm.exception.FarmNotFoundException;
 import shop.nongdam.nongdambackend.member.domain.Member;
 import shop.nongdam.nongdambackend.member.domain.Role;
-import shop.nongdam.nongdambackend.member.domain.SocialType;
 import shop.nongdam.nongdambackend.member.domain.repository.MemberRepository;
 import shop.nongdam.nongdambackend.region.domain.Region;
 import shop.nongdam.nongdambackend.region.domain.repository.RegionRepository;
