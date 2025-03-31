@@ -1,4 +1,4 @@
-package shop.nongdam.nongdambackend.restaurant.appllication;
+package shop.nongdam.nongdambackend.restaurant.application;
 
 import java.util.List;
 import lombok.RequiredArgsConstructor;

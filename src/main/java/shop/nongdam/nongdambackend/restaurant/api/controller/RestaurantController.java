@@ -24,7 +24,7 @@ import shop.nongdam.nongdambackend.restaurant.api.dto.request.RestaurantSaveRequ
 import shop.nongdam.nongdambackend.restaurant.api.dto.response.RestaurantDetailInfoResponseDTO;
 import shop.nongdam.nongdambackend.restaurant.api.dto.response.RestaurantInfoResponseDTO;
 import shop.nongdam.nongdambackend.restaurant.api.dto.response.RestaurantTagResponseDTOs;
-import shop.nongdam.nongdambackend.restaurant.appllication.RestaurantService;
+import shop.nongdam.nongdambackend.restaurant.application.RestaurantService;
 
 @RestController
 @RequiredArgsConstructor
