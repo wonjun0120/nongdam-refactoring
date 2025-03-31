@@ -12,6 +12,7 @@ import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.web.multipart.MultipartFile;
+import shop.nongdam.nongdambackend.global.aws.application.ImageService;
 import shop.nongdam.nongdambackend.member.domain.Member;
 import shop.nongdam.nongdambackend.member.domain.Role;
 import shop.nongdam.nongdambackend.member.domain.SocialType;
@@ -40,6 +41,8 @@ public class RestaurantServiceTest {
 
     @Mock private MemberRepository memberRepository;
     @Mock private RestaurantRepository restaurantRepository;
+    @Mock private ImageService imageService;
+
 
     private final String EMAIL = "test@test.com";
     private Member member;
