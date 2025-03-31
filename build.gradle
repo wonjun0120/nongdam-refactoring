@@ -45,9 +45,7 @@ jacocoTestReport {
             files(classDirectories.files.collect {
                 fileTree(dir: it, exclude: [
                         '**/dto/**',
-                        '**/config/**',
-                        '**/exception/**',
-                        '**/jwt/**',
+                        '**/global/**',
                         '**/GlobalExceptionHandler*'
                 ])
             })
