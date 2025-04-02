@@ -50,26 +50,29 @@ resource "aws_security_group" "this" {
   }
 }
 
-# EC2 인스턴스 생성 (기존 PEM 키 사용, 공인 IP는 EIP를 통해 할당)
+# EC2 인스턴스 생성 (기존 PEM 키 사용, 탄력적 IP는 별도 리소스에서 할당)
 resource "aws_instance" "this" {
-  ami                    = data.aws_ami.ubuntu.id
-  instance_type          = var.instance_type
-  subnet_id              = var.subnet_id
-  key_name               = var.key_name
+  ami                         = data.aws_ami.ubuntu.id
+  instance_type               = var.instance_type
+  subnet_id                   = var.subnet_id
+  key_name                    = var.key_name
   associate_public_ip_address = false
 
   vpc_security_group_ids = [aws_security_group.this.id]
 
   tags = {
-    Name        = "${var.env}-ec2-instance"
+    Name        = "${var.env}-test-instance"
     Environment = var.env
   }
+
+  # user_data 추가: 파일로부터 읽어온 내용을 전달
+  user_data = var.user_data
 }
 
 # 탄력적 IP(EIP)를 생성하여 EC2 인스턴스에 할당
 resource "aws_eip" "this" {
   instance = aws_instance.this.id
-  vpc      = true
+  domain   = "vpc"
 
   tags = {
     Name        = "${var.env}-ec2-eip"

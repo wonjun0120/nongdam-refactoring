@@ -34,3 +34,9 @@ variable "allowed_app_cidrs" {
   type        = list(string)
   default     = ["0.0.0.0/0"]
 }
+
+variable "user_data" {
+  description = "EC2 인스턴스 부팅 시 실행할 user_data 스크립트"
+  type        = string
+  default     = ""  # 기본값은 빈 문자열, 필요 시 호출 모듈에서 전달
+}
